@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Popular Posts</h1>
+    <ul>
+        {% for post in Posts %}
+            <li>{{ post.title }} - {{ post.likes }} likes</li>
+        {% endfor %}
+        </ul>
+{% endblock %}

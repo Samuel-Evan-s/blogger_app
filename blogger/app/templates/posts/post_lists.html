@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="my-5">My Blog</h1>
+        <div class="row row-cols-3 g-2">
+            {% for post in Posts %}
+            <div class="col">
+                <div class="p-3 border">
+                    <a href="{% url 'posts.details' post.id %}" class="text-dark text-decoration-non">
+                        <h3>{{post.title}}</h3>
+                    </a>
+                    {{post.content|slice:":100"}}...
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="d-flex justify-content-center my-3">
+            <a href="{% url 'posts.new' %}" class="btn btn-primary">Create New Post</a>
+        </div>
+{% endblock %}

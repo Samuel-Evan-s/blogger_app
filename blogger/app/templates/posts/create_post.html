@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form href="{% url 'posts.new' %}" method='POST'>
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_title" class="form-label">Title</label>
+        <input type="text" name="title" maxlength="200" class="form-control" required id="id_title" placeholder="Title">
+    </div>
+    <div class="mb-3">
+        <label for="id_content" class="form-label">Content</label>
+        <textarea name="content" cols="40" rows="10" class="form-control" required id="id_content" placeholder="Write your thoughts"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Post</button>
+{% endblock %}
