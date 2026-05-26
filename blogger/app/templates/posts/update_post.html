@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="{% url 'posts.new' %}" method='POST'>
+<form method='POST'>
     {% csrf_token %}
     <div class="mb-3">
         <label for="id_title" class="form-label">Title</label>
@@ -17,6 +17,7 @@
             <div class="text-danger">{{ form.content.errors }}</div>
         {% endif %}
     </div>
-    <button type="submit" class="btn btn-primary">Create Post</button>
+    <button type="submit" class="btn btn-primary">Update Post</button>
+    <a href="{% url 'posts' %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}

@@ -6,6 +6,23 @@
         <title>My Blog</title>
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="ms-auto">
+                {% if user.is_authenticated %}
+                    <span class="navbar-text me-2">Welcome, {{ user.username }}!</span>
+                    <a href="{% url 'home' %}" class="btn btn-outline-light me-1">Home</a>
+                    <a href="{% url 'posts.new' %}" class="btn btn-outline-light me-1">Create New Post</a>
+                    <form method="post" action="{% url 'home.logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light">Logout</button>
+                    </form>
+                    
+                {% else %}
+                    <a href="{% url 'home.login' %}" class="btn btn-outline-light me-1">Login</a>
+                    <a href="{% url 'home.signup' %}" class="btn btn-outline-light me-1">Sign Up</a>
+                {% endif %}
+            </div>
+        </nav>
         <div class="my-5 text-center container">
             {% block content %}
             {% endblock %}

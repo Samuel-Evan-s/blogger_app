@@ -2,7 +2,23 @@
 
 {% block content %}
 <div class="border round">
-    <h1 class="my-5">{{ Post.title }}</h1>
+    <h1 class="my-5">{{ Post.title }}{% if Post.is_public %}<span class="badge bg-secondary">Public</span>{% endif %}</h1>
     <p>{{ Post.content }}</p>
+</div>
+<div class="mt-3">
+    <p>Likes: {{ Post.likes }}</p>
+    <form action="{% url 'posts.add_like' Post.pk %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Upvote</button>
+    </form>
+    <form action="{% url 'posts.toggle_visibility' Post.pk %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning">
+            {% if Post.is_public %}Make Private{% else %}Make Public{% endif %}
+        </button>
+    </form>
+    <a href="{% url 'posts.update' Post.pk %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'posts' %}" class="btn btn-secondary">Back to Posts</a>
+    <a href="{% url 'posts.delete' Post.pk %}" class="btn btn-danger">Delete</a>
 </div>
 {% endblock %}

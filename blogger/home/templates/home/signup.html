@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Create Your Account</h3>
+
+                <!-- Display form errors if any -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error:</strong>
+                        {% for error in form.non_field_errors %}
+                            <p class="mb-0">{{ error }}</p>
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endif %}
+
+                <form method="post" novalidate id="signupForm">
+                    {% csrf_token %}
+
+                    <!-- Username Field -->
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email Address</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Password</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <small class="form-text text-muted">{{ form.password.help_text }}</small>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div class="mb-3">
+                        <label for="id_password_confirm" class="form-label">Confirm Password</label>
+                        {{ form.password_confirm }}
+                        <div id="passwordMatch" class="mt-2"></div>
+                        {% if form.password_confirm.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.password_confirm.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign Up</button>
+
+                    <!-- Login Link -->
+                    <p class="text-center">
+                        Already have an account? 
+                        <a href="{% url 'home.login' %}">Login here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password Verification Script -->
+<script>
+    const passwordField = document.getElementById('id_password');
+    const confirmPasswordField = document.getElementById('id_password_confirm');
+    const passwordMatchDiv = document.getElementById('passwordMatch');
+
+    // Function to check password match
+    function checkPasswordMatch() {
+        if (confirmPasswordField.value === '') {
+            passwordMatchDiv.innerHTML = '';
+            confirmPasswordField.classList.remove('is-invalid', 'is-valid');
+            return;
+        }
+
+        if (passwordField.value === confirmPasswordField.value) {
+            passwordMatchDiv.innerHTML = '<small class="text-success"><i class="bi bi-check-circle"></i> Passwords match ✓</small>';
+            confirmPasswordField.classList.remove('is-invalid');
+            confirmPasswordField.classList.add('is-valid');
+        } else {
+            passwordMatchDiv.innerHTML = '<small class="text-danger"><i class="bi bi-x-circle"></i> Passwords do not match ✗</small>';
+            confirmPasswordField.classList.remove('is-valid');
+            confirmPasswordField.classList.add('is-invalid');
+        }
+    }
+
+    // Check on input
+    confirmPasswordField.addEventListener('input', checkPasswordMatch);
+    passwordField.addEventListener('input', checkPasswordMatch);
+
+    // Validate on submit
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        if (passwordField.value !== confirmPasswordField.value) {
+            e.preventDefault();
+            passwordMatchDiv.innerHTML = '<small class="text-danger"><i class="bi bi-x-circle"></i> Passwords do not match ✗</small>';
+            confirmPasswordField.classList.add('is-invalid');
+        }
+    });
+</script>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+    
+    .form-control {
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+    
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    .btn-primary {
+        border-radius: 6px;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
